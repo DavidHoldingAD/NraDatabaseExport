@@ -1,0 +1,18 @@
+<Project>
+
+	<PropertyGroup>
+		<Product>NRA Database Export</Product>
+		
+		<Copyright>Copyright (c) 2018-2020 Vladimir Dimitrov</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+		<LangVersion>8.0</LangVersion>
+		<Nullable>warnings</Nullable>
+
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/DavidHoldingAD/NraDatabaseExport</RepositoryUrl>
+
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+
+</Project>

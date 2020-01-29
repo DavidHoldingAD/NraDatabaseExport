@@ -1,0 +1,128 @@
+﻿<UserControl x:Class="NraDatabaseExport.App.Slides.SelectTablesSlide"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:infrastructure="clr-namespace:NraDatabaseExport.App.Infrastructure"
+	Background="{DynamicResource MaterialDesignPaper}"
+	mc:Ignorable="d"
+	d:DesignHeight="400"
+	d:DesignWidth="350">
+	<UserControl.Resources>
+		<infrastructure:EscapeUnderscoreStringConverter x:Key="EscapeUnderscoreStringConverter" />
+	</UserControl.Resources>
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="Auto" />
+		</Grid.RowDefinitions>
+		<TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="TitleTextBlock"
+			Margin="0 0 0 10"
+			Style="{StaticResource MaterialDesignSubtitle1TextBlock}"
+			Text="Избор на таблици"
+			/>
+		<Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+			x:Uid="TablesLabel"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
+			Content="Таблици:"
+			/>
+		<StackPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+			Orientation="Horizontal"
+			HorizontalAlignment="Left">
+			<Button
+				x:Uid="SelectAllTablesButton"
+				Margin="0 5 5 5"
+				Content="Добави всички"
+				Command="{Binding SelectAllTablesCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
+				/>
+			<Button
+				x:Uid="DeselectAllTablesButton"
+				Margin="0 5 5 5"
+				Content="Премахни всички"
+				Command="{Binding DeselectAllTablesCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
+				/>
+			<Button
+				x:Uid="InvertAllTablesButton"
+				Margin="0 5 5 5"
+				Content="Обърни избора"
+				Command="{Binding InvertAllTablesCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
+				/>
+		</StackPanel>
+		<DataGrid Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+			HorizontalAlignment="Stretch"
+			VerticalAlignment="Top"
+			BorderBrush="LightGray"
+			BorderThickness="1"
+			MaxHeight="300"
+			ItemsSource="{Binding Tables}"
+			AutoGenerateColumns="False"
+			SelectionMode="Extended"
+			
+			>
+			<DataGrid.Columns>
+				<DataGridTemplateColumn
+					x:Uid="TableIsSelectedDataGridTemplateColumn"
+					Header="Избрана">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<CheckBox
+								HorizontalAlignment="Center"
+								IsChecked="{Binding Path=IsSelected, UpdateSourceTrigger=PropertyChanged}"
+								/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn
+					x:Uid="TableDisplayNameDataGridTextColumn"
+					Header="Наименование"
+					Binding="{Binding DisplayName}"
+					IsReadOnly="True"
+					/>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Label Grid.Row="4" Grid.Column="0"
+			x:Uid="DatabaseLabel"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Top"
+			Content="Брой таблици:"
+			/>
+		<TextBlock Grid.Row="4" Grid.Column="1"
+			HorizontalAlignment="Left"
+			VerticalAlignment="Center"
+			FontWeight="Heavy"
+			Text="{Binding SelectedTablesCount}"
+			/>
+		<StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
+			Orientation="Horizontal"
+			HorizontalAlignment="Right">
+			<Button
+				x:Uid="GoBackToSelectDatabaseButton"
+				Margin="10 10 0 0"
+				Content="Назад"
+				Command="{Binding GoBackToSelectDatabaseCommand}"
+				Style="{StaticResource MaterialDesignFlatLightBgButton}"
+				/>
+			<Button
+				x:Uid="GoToConfigureExportButton"
+				Margin="10 10 0 0"
+				Content="Напред"
+				Command="{Binding GoToConfigureExportCommand}"
+				Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+				IsDefault="True"
+				/>
+		</StackPanel>
+	</Grid>
+</UserControl>

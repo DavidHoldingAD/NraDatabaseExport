@@ -1,25 +1,55 @@
-# NAP Database Export
-This is a simple project aimed to fulfil the requirements for regulation N-18 in Bulgaria.
+# NRA Database Export
 
-This regulation requires every software that manages sales which are paid in cash to supply an open source tool to extract information from the database.
+<p align="center">
+    <a href="https://github.com/DavidHoldingAD/NraDatabaseExport/graphs/contributors" alt="Contributors">
+        <img src="https://img.shields.io/github/contributors/DavidHoldingAD/NraDatabaseExport" />
+    </a>
+    <a href="https://github.com/DavidHoldingAD/NraDatabaseExport/pulse" alt="Activity">
+        <img src="https://img.shields.io/github/commit-activity/m/DavidHoldingAD/NraDatabaseExport" />
+    </a>
+</p>
 
-The exact text states:
+### Introduction
 
-_3. за софтуери, които се инсталират в среда на клиента, се представят: пълно описание на обектите в базата данни (БД), свързани с управлението на продажбите, вкл. таблици и предназначението им, връзки между тях, описание на полетата в таблиците, както и изпълним файл и source-кодът, от който е генериран изпълнимият файл, за достъп и извличане на данни от БД в структуриран четим вид с възможност за избор - от всички или от част от таблиците, с които работи софтуерът;_
+This project is aimed to fulfil the requirements of [Regulation N-18](https://lex.bg/laws/ldoc/2135540645) by the Minister of Finance of
+Republic of Bulgaria.
 
-## What this tool does
+The regulation requires every vendor of a software that manages sales paid in cash to provide the source code of a tool to extract related
+data from the database.
 
-This tool consists of a single screen which allows you to:
+The exact text of art.52в, p.2.3 states:
 
-1. Connect to a local database or a server.
-2. List all databases (if you are connecting to a server).
-3. List all tables in the database.
-4. Select which tables to extract information from or select all.
-5. Choose a file format for extraction.
-6. Save all the data from each selected table in a separate file.
+> 3. (доп. - ДВ, бр. 26 от 2019 г., в сила от 29.03.2019 г.) за софтуери, които се инсталират в среда на клиента, се представят: пълно
+> описание на обектите в базата данни (БД), свързани с управлението на продажбите, вкл. таблици и предназначението им, връзки между тях,
+> описание на полетата в таблиците, както и изпълним файл и source-кодът, от който е генериран изпълнимият файл, за достъп и извличане на
+> данни от БД в структуриран четим вид с възможност за избор - от всички или от част от таблиците, с които работи софтуерът, когато
+> информацията, съдържаща се в експортираните от изпълнимия файл таблици, представлява лични данни по смисъла на Регламент (ЕС) 2016/679 на
+> Европейския парламент и на Съвета от 27 април 2016 (ОВ, L119 от 4 май 2016 г.) или здравна информация по смисъла на чл. 27 от Закона за
+> здравето, при експорта тези данни не се извличат;
 
-## Technologies used
+### System Requirements
 
-C#, Windows Forms and .NET 4.5.2 (almost any software vendor can use this as it runs on Windows Vista SP2 and should run on Linux, macOS with Mono)
+In order for the application to work correctly, the following system requirements should be met:
 
-Connects to SQLite, MySQL, Microsoft SQL Server, Microsoft Access, Firebird Server and ODBC data sources. More can be added in the future from contributors.
+- Microsoft Windows 7+ (64-bit)
+- .NET Core 3.1+
+
+### Supported Databases
+
+- SQLite
+- MySQL/MariaDB
+- Microsoft SQL Server
+- Microsoft Access
+- Firebird Server
+- ODBC
+
+### Supported File Formats
+
+- CSV - a text file, the values of which are delimited in accordance with the current regional settings
+- Comma-separated CSV - a text file, the values of which are delimited with a "," (comma) symbol
+- Semicolon-separated CSV - a text file, the values of which are delimited with a ";" (semicolon) symbol
+- JSON - a text file following [RFC 8259](https://tools.ietf.org/html/rfc8259)
+
+### Contribution
+
+This project is a fork of [NapDatabaseExport](https://github.com/flipm0de/NapDatabaseExport).
