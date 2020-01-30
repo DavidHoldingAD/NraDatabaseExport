@@ -39,6 +39,11 @@ namespace NraDatabaseExport.App.Options
 		public string DatabaseName { get; set; }
 
 		/// <summary>
+		/// Gets or sets the flag indicating whether to show only listed tables or existing tables as well.
+		/// </summary>
+		public bool ListedTablesOnly { get; set; }
+
+		/// <summary>
 		/// Gets or sets the list of tables.
 		/// </summary>
 		public DbTableOptionListItem[] Tables { get; set; }

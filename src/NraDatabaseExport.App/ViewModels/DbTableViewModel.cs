@@ -31,6 +31,12 @@ namespace NraDatabaseExport.App.ViewModels
 				: $"{OwnerName}.{Name}";
 
 		/// <summary>
+		/// Gets the flag indicating whether the data from the table can be exported or not.
+		/// </summary>
+		public bool CanExport
+			=> ExportStatus != DbTableExportStatus.Missing;
+
+		/// <summary>
 		/// Gets or sets the flag indicating whether the item is selected or not.
 		/// </summary>
 		public bool IsSelected
@@ -45,7 +51,15 @@ namespace NraDatabaseExport.App.ViewModels
 		public DbTableExportStatus? ExportStatus
 		{
 			get => _exportStatus;
-			set => SetProperty(ref _exportStatus, value);
+			set
+			{
+				if (!SetProperty(ref _exportStatus, value))
+				{
+					return;
+				}
+
+				NotifyPropertyChanged(nameof(CanExport));
+			}
 		}
 
 		/// <summary>

@@ -70,7 +70,6 @@
 			ItemsSource="{Binding Tables}"
 			AutoGenerateColumns="False"
 			SelectionMode="Extended"
-			
 			>
 			<DataGrid.Columns>
 				<DataGridTemplateColumn
@@ -81,6 +80,7 @@
 							<CheckBox
 								HorizontalAlignment="Center"
 								IsChecked="{Binding Path=IsSelected, UpdateSourceTrigger=PropertyChanged}"
+								IsEnabled="{Binding Path=CanExport}"
 								/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
@@ -93,18 +93,47 @@
 					/>
 			</DataGrid.Columns>
 		</DataGrid>
-		<Label Grid.Row="4" Grid.Column="0"
-			x:Uid="DatabaseLabel"
-			HorizontalAlignment="Left"
-			VerticalAlignment="Top"
-			Content="Брой таблици:"
+		<StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+			HorizontalAlignment="Stretch"
+			Orientation="Horizontal"
+			>
+			<Label
+				x:Uid="TablesCountLabel"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Content="Общо таблици:"
 			/>
-		<TextBlock Grid.Row="4" Grid.Column="1"
-			HorizontalAlignment="Left"
-			VerticalAlignment="Center"
-			FontWeight="Heavy"
-			Text="{Binding SelectedTablesCount}"
+			<TextBlock
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				FontWeight="Heavy"
+				Text="{Binding TablesCount}"
 			/>
+			<Label
+				x:Uid="SelectedTablesCountLabel"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Content="Избрани таблици:"
+			/>
+			<TextBlock
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				FontWeight="Heavy"
+				Text="{Binding SelectedTablesCount}"
+			/>
+			<Label
+				x:Uid="MissingTablesCountLabel"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Content="Брой липсващи таблици:"
+			/>
+			<TextBlock
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				FontWeight="Heavy"
+				Text="{Binding MissingTablesCount}"
+			/>
+		</StackPanel>
 		<StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
 			Orientation="Horizontal"
 			HorizontalAlignment="Right">

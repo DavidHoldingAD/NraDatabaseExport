@@ -6,12 +6,20 @@
 	public enum DbTableExportStatus
 	{
 		/// <summary>
-		/// Not applicable
+		/// Missing
 		/// </summary>
 		/// <remarks>
-		/// The table has not been selected for import.
+		/// The table is required but missing.
 		/// </remarks>
-		NotApplicable,
+		Missing,
+
+		/// <summary>
+		/// Skipped
+		/// </summary>
+		/// <remarks>
+		/// The table has been skipped because it was not selected for export.
+		/// </remarks>
+		Skipped,
 
 		/// <summary>
 		/// Busy
