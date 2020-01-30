@@ -243,6 +243,12 @@ namespace NraDatabaseExport.App.ViewModels
 		public ObservableCollection<DbDatabaseViewModel> Databases { get; }
 
 		/// <summary>
+		/// Gets the number of databases.
+		/// </summary>
+		public int DatabasesCount
+			=> Databases.Count;
+
+		/// <summary>
 		/// Gets or sets the selected database.
 		/// </summary>
 		public DbDatabaseViewModel SelectedDatabase
@@ -294,10 +300,22 @@ namespace NraDatabaseExport.App.ViewModels
 		public DelegateCommand InvertAllTablesCommand { get; }
 
 		/// <summary>
+		/// Gets the number of tables.
+		/// </summary>
+		public int TablesCount
+			=> Tables.Count;
+
+		/// <summary>
 		/// Gets the number of selected tables.
 		/// </summary>
 		public int SelectedTablesCount
 			=> Tables.Count(x => x.IsSelected);
+
+		/// <summary>
+		/// Gets the number of missing tables.
+		/// </summary>
+		public int MissingTablesCount
+			=> Tables.Count(x => x.ExportStatus == DbTableExportStatus.Missing);
 
 		/// <summary>
 		/// Gets the command to go back to the "Select Database" slide.
@@ -612,10 +630,14 @@ namespace NraDatabaseExport.App.ViewModels
 						break;
 					}
 			}
+
+			NotifyPropertyChanged(nameof(DatabasesCount));
 		}
 
 		private void DatabasesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			NotifyPropertyChanged(nameof(DatabasesCount));
+
 			GoToSelectDatabaseCommand.NotifyCanExecuteChanged();
 		}
 
@@ -663,17 +685,17 @@ namespace NraDatabaseExport.App.ViewModels
 
 		private void SelectAllTables(object parameter)
 		{
-			Tables.ToList().ForEach(x => x.IsSelected = true);
+			Tables.Where(x => x.CanExport).ToList().ForEach(x => x.IsSelected = true);
 		}
 
 		private void DeselectAllTables(object parameter)
 		{
-			Tables.ToList().ForEach(x => x.IsSelected = false);
+			Tables.Where(x => x.CanExport).ToList().ForEach(x => x.IsSelected = false);
 		}
 
 		private void InvertAllTables(object parameter)
 		{
-			Tables.ToList().ForEach(x => x.IsSelected = !x.IsSelected);
+			Tables.Where(x => x.CanExport).ToList().ForEach(x => x.IsSelected = !x.IsSelected);
 		}
 
 		private void Tables_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -708,12 +730,16 @@ namespace NraDatabaseExport.App.ViewModels
 					}
 			}
 
+			NotifyPropertyChanged(nameof(TablesCount));
 			NotifyPropertyChanged(nameof(SelectedTablesCount));
+			NotifyPropertyChanged(nameof(MissingTablesCount));
 		}
 
 		private void TablesItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
+			NotifyPropertyChanged(nameof(TablesCount));
 			NotifyPropertyChanged(nameof(SelectedTablesCount));
+			NotifyPropertyChanged(nameof(MissingTablesCount));
 
 			GoToConfigureExportCommand.NotifyCanExecuteChanged();
 		}
@@ -927,11 +953,21 @@ namespace NraDatabaseExport.App.ViewModels
 
 			using DbConnection connection = await dbProvider.OpenConnectionAsync(cancellationToken: cancellationToken);
 
-			DbTableListItem[] tableListItems
-				= await dbProvider.ListTablesAsync(connection, cancellationToken: cancellationToken);
+			IEnumerable<DbTableListItem> tableListItems
+					= await dbProvider.ListTablesAsync(connection, cancellationToken: cancellationToken);
+
+			DbTableOptionListItem[] listedTables = _exportOptions.Value.Tables;
+
+			if (_exportOptions.Value.ListedTablesOnly
+				&& listedTables != null)
+			{
+				tableListItems = tableListItems
+					.Where(x => listedTables.Any(y => y.Name == x.Name && y.OwnerName == x.OwnerName));
+			}
 
 			Tables.Clear();
 
+			// add existing tables
 			foreach (DbTableListItem tableListItem in tableListItems)
 			{
 				var table = new DbTableViewModel(tableListItem.Name, tableListItem.OwnerName);
@@ -939,7 +975,7 @@ namespace NraDatabaseExport.App.ViewModels
 				Tables.Add(table);
 			}
 
-			if (!(_exportOptions.Value.Tables is null))
+			if (!(listedTables is null))
 			{
 				foreach (DbTableOptionListItem tableOptionListItem in _exportOptions.Value.Tables)
 				{
@@ -947,8 +983,24 @@ namespace NraDatabaseExport.App.ViewModels
 						.FirstOrDefault(x => x.Name == tableOptionListItem.Name
 							&& x.OwnerName == tableOptionListItem.OwnerName);
 
-					if (!(table is null))
+					// if the table is not on the list...
+					if (table is null)
 					{
+						// if the table is required, ...
+						if (tableOptionListItem.IsRequired)
+						{
+							// add the table as missing to the list of tables as missing
+							table = new DbTableViewModel(tableOptionListItem.Name, tableOptionListItem.OwnerName)
+							{
+								ExportStatus = DbTableExportStatus.Missing,
+							};
+
+							Tables.Insert(0, table);
+						}
+					}
+					else
+					{
+						// select the table
 						table.IsSelected = true;
 					}
 				}
@@ -987,9 +1039,14 @@ namespace NraDatabaseExport.App.ViewModels
 
 				foreach (DbTableViewModel table in Tables)
 				{
+					if (!table.CanExport)
+					{
+						continue;
+					}
+
 					if (!table.IsSelected)
 					{
-						table.ExportStatus = DbTableExportStatus.NotApplicable;
+						table.ExportStatus = DbTableExportStatus.Skipped;
 
 						continue;
 					}

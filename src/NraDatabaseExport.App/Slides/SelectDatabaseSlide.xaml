@@ -48,18 +48,35 @@
 				</Style>
 			</ListBox.ItemContainerStyle>
 		</ListBox>
-		<Label Grid.Row="3" Grid.Column="0"
-			x:Uid="DatabaseLabel"
-			HorizontalAlignment="Left"
-			VerticalAlignment="Top"
-			Content="База данни:"
+		<StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+			HorizontalAlignment="Stretch"
+			Orientation="Horizontal"
+			>
+			<Label
+				x:Uid="DatabasesCountLabel"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Content="Общо бази данни:"
 			/>
-		<TextBlock Grid.Row="3" Grid.Column="1"
-			HorizontalAlignment="Left"
-			VerticalAlignment="Center"
-			FontWeight="Heavy"
-			Text="{Binding SelectedDatabase.Name}"
+			<TextBlock
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				FontWeight="Heavy"
+				Text="{Binding DatabasesCount}"
 			/>
+			<Label
+				x:Uid="SelectedDatabaseLabel"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Top"
+				Content="Избрана база данни:"
+				/>
+			<TextBlock
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				FontWeight="Heavy"
+				Text="{Binding SelectedDatabase.Name}"
+				/>
+		</StackPanel>
 		<StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
 			Orientation="Horizontal"
 			HorizontalAlignment="Right">
