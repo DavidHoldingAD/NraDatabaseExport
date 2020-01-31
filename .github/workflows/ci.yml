@@ -27,19 +27,21 @@ jobs:
 
     - uses: actions/checkout@v2
 
-    - name: Setup .NET Core SDK
+    - name: Setup .NET Core SDK ${{ matrix.dotnet }}
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ matrix.dotnet }}
 
-    - name: Build with dotnet
+    - name: Build for ${{ matrix.runtime }}
       run: dotnet build `
         --configuration $CONFIGURATION `
-        --runtime ${{ matrix.runtime }}
+        --runtime ${{ matrix.runtime }} `
+        .\NraDatabaseExport.sln
 
-    - name: Publish with dotnet (win-x64)
+    - name: Publish for ${{ matrix.runtime }}
       run: |
-        dotnet publish .\src\NraDatabaseExport.App `
+        dotnet publish `
           --configuration $CONFIGURATION `
           --runtime ${{ matrix.runtime }} `
-          --output .\.publish\${{ matrix.runtime }}\
+          --output .\.publish\${{ matrix.runtime }}\ `
+          .\src\NraDatabaseExport.App\
