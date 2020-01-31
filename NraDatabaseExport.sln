@@ -23,6 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NraDatabaseExport", "src\Nr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NraDatabaseExport.App", "src\NraDatabaseExport.App\NraDatabaseExport.App.csproj", "{47006FEC-39E6-440E-B847-6346F39FDE02}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{DCAB69EF-E25D-401E-866D-5DB5B1EA3AD8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{F84A31DF-79F5-45C4-A408-6F084CDD8C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +51,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{637E3E87-FDB9-48E8-BD3B-445D2E904833} = {A1F73B46-B680-41B7-8825-7F22969272F3}
 		{47006FEC-39E6-440E-B847-6346F39FDE02} = {A1F73B46-B680-41B7-8825-7F22969272F3}
+		{F84A31DF-79F5-45C4-A408-6F084CDD8C5D} = {DCAB69EF-E25D-401E-866D-5DB5B1EA3AD8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5D1B491E-551E-4220-900E-6D8005A4C8EB}
