@@ -25,7 +25,13 @@ jobs:
         dotnet: [ '3.1.100' ]
     steps:
 
-    - uses: actions/checkout@v2
+    - name: Fetch source
+      uses: actions/checkout@v2
+      with:
+        # Fetch all history for GitVersionTask to work
+        # Otherwise:
+        # > Could not find a 'develop' or 'master' branch, neither locally nor remotely.
+        fetch-depth: 0
 
     - name: Setup .NET Core SDK ${{ matrix.dotnet }}
       uses: actions/setup-dotnet@v1
