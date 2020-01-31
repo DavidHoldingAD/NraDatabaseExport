@@ -33,15 +33,15 @@ jobs:
         dotnet-version: ${{ matrix.dotnet }}
 
     - name: Build for ${{ matrix.runtime }}
-      run: dotnet build `
-        --configuration ${{ CONFIGURATION }} `
-        --runtime ${{ matrix.runtime }} `
+      run: dotnet build
+        --configuration $env:CONFIGURATION
+        --runtime ${{ matrix.runtime }}
         .\NraDatabaseExport.sln
 
     - name: Publish for ${{ matrix.runtime }}
       run: |
-        dotnet publish `
-          --configuration ${{ CONFIGURATION }} `
-          --runtime ${{ matrix.runtime }} `
-          --output .\.publish\${{ matrix.runtime }}\ `
+        dotnet publish
+          --configuration $env:CONFIGURATION
+          --runtime ${{ matrix.runtime }}
+          --output .\.publish\${{ matrix.runtime }}\
           .\src\NraDatabaseExport.App\
