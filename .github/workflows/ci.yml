@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - feature/*
+      - hotfix/*
+      - release/*
+  pull_request:
+    branches:
+      - master
+      - develop
+
+env:
+  DOTNETCORE_SDK_VERSION: 3.1.100
+  CONFIGURATION: Release
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: windows-latest
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: $(DOTNETCORE_SDK_VERSION)
+
+    - name: Build with dotnet
+      run: dotnet build `
+        --configuration $(CONFIGURATION)
+
+  release:
+    name: Release
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: $(DOTNETCORE_SDK_VERSION)
+
+    - name: Publish with dotnet (win-x64)
+      run: |
+        dotnet publish .\src\NraDatabaseExport.App `
+          --configuration Release `
+          --output .\.publish\win-x64\
