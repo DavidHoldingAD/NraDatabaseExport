@@ -34,14 +34,14 @@ jobs:
 
     - name: Build for ${{ matrix.runtime }}
       run: dotnet build `
-        --configuration $CONFIGURATION `
+        --configuration ${{ CONFIGURATION }} `
         --runtime ${{ matrix.runtime }} `
         .\NraDatabaseExport.sln
 
     - name: Publish for ${{ matrix.runtime }}
       run: |
         dotnet publish `
-          --configuration $CONFIGURATION `
+          --configuration ${{ CONFIGURATION }} `
           --runtime ${{ matrix.runtime }} `
           --output .\.publish\${{ matrix.runtime }}\ `
           .\src\NraDatabaseExport.App\
